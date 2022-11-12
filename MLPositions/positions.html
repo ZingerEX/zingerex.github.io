@@ -1,0 +1,126 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<h2></h2>
+		<canvas width="400px" height="400px" style="border: 1px solid #000000"></canvas>
+		<div style="display:block">
+			<input type="text"/><span style="padding-left:30px">Include every individual change?</span><input type="checkbox"/>
+		</div>
+		<button onclick="calculatePos()">Check Position History</button>
+		<script type="text/javascript" src="mlpositions.js"></script>
+		
+		<script>
+			var interest;
+			var positions = [];
+			var positionDates = [];
+			
+			function calculatePos(){
+				var includeAll = document.getElementsByTagName("input")[1].checked;	// This is for whether every individual level change is included
+				interest = document.getElementsByTagName("input")[0].value.toLowerCase();
+				positions = [];
+				positionDates = [];
+				var allLevelPos = [[],[]];
+				var targetIndex;
+				
+				var added = false;
+				
+				// i holds each timestamp index
+				for(var i = 0; i < dates.length; i++){
+				
+					// j holds each level/placement index
+					for(var j = 0; j < JSON[dates[i]]["levels"].length; j++){
+						if(allLevelPos[0].indexOf(JSON[dates[i]]["levels"][j].toLowerCase()) == -1){
+							// If the level added is new, add it to the array
+							allLevelPos[0].push(JSON[dates[i]]["levels"][j].toLowerCase());
+							allLevelPos[1].push(JSON[dates[i]]["placements"][j]);
+							
+							if(!added && JSON[dates[i]]["levels"][j].toLowerCase() == interest){
+								added = true;
+								targetIndex = allLevelPos[0].length - 1;
+							}
+							
+							// Increase the number of every level with a higher placement
+							for(var dec = allLevelPos[0].length - 2; dec >= 0; dec--){
+								if(JSON[dates[i]]["placements"][j] <= allLevelPos[1][dec]){
+									allLevelPos[1][dec]++;
+								}
+							}
+						}else{
+							// If the level added is already in the list, adjust its placement
+							var index = allLevelPos[0].indexOf(JSON[dates[i]]["levels"][j].toLowerCase());
+							var oldPlace = allLevelPos[1][index];
+							var newPlace = JSON[dates[i]]["placements"][j];
+							
+							allLevelPos[1][index] = newPlace;
+							if(newPlace < oldPlace){	// Moved up the List
+								// Increase the number of every level with a higher placement
+								for(var search = allLevelPos[0].length - 1; search >= 0; search--){
+									if(newPlace <= allLevelPos[1][search] && oldPlace > allLevelPos[1][search] && search != index){
+										// If the new position is higher and the old position was lower
+										allLevelPos[1][search]++;
+									}
+								}
+							}else{						// Moved down the List
+								// Increase the number of every level with a higher placement
+								for(var search = allLevelPos[0].length - 1; search >= 0; search--){
+									if(newPlace >= allLevelPos[1][search] && oldPlace < allLevelPos[1][search] && search != index){
+										// If the new position is lower and the old position was higher
+										allLevelPos[1][search]--;
+									}
+								}
+							}
+						}
+						
+							// Update the running array of all of the target level's previous positions
+							if(added && includeAll && allLevelPos[1][targetIndex] != positions[positions.length - 1]){	// If its latest position is no different from its previous position, no change is made
+								positions.push(allLevelPos[1][targetIndex]);
+								positionDates.push(dates[i]);
+							}
+						}
+							
+					// Update the running array of all of the target level's previous positions
+					if(added && !includeAll && allLevelPos[1][targetIndex] != positions[positions.length - 1]){	// If its latest position is no different from its previous position, no change is made
+						positions.push(allLevelPos[1][targetIndex]);
+						positionDates.push(dates[i]);
+					}
+				}
+				positionDraw();
+			}
+			
+			/*document.write(positions + "<br><br>");
+			document.write(positionDates);*/
+		</script>
+		
+		<script type="text/javascript">
+			var height = 400;
+			var width = 400;
+			
+			var canvas = document.getElementsByTagName("canvas")[0];
+			ctx = canvas.getContext("2d");
+			
+			function positionDraw(){
+				ctx.fillStyle = "white";
+				ctx.fillRect(0, 0, width, height);
+				document.getElementsByTagName("h2")[0].innerHTML = interest + " Position History";
+			
+				var count = positions.length;
+				var min = Math.min(...positions) - 1;
+				var max = Math.max(...positions) + 1;
+				const difference = max - min;
+				
+				ctx.strokeStyle = "#00aadd";
+				ctx.lineWidth = 2;
+				
+				ctx.beginPath();
+				ctx.moveTo(0, height / (difference) * (positions[0] - min));
+				for(var i = 0; i < positions.length; i++){
+					ctx.lineTo(width / count * i, height / (difference) * (positions[i] - min));
+					ctx.lineTo(width / count * (i + 1), height / (difference) * (positions[i] - min));
+				}
+				ctx.stroke();
+				ctx.closePath();
+			}
+		</script>
+	</body>
+</html>
