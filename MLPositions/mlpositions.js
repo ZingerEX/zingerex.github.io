@@ -429,7 +429,7 @@ var JSON = {
 		"placements": [97, 99]
 	},
 	"2022-10-23": {
-		"levels": ["Yatagarasu", "RUST", "xo", "Digital Descent", "The Reaper", "Auditory Breaker", "Infernal Abyss", "Athanatos", "Bausha Vortex", "Missing Benefits", "Furious Flames", "Polygonal Paradox", "Colorful Corruption", "Prisma ", "Endless Dream", "Galactic Shift", "lodin da fish washer", "Apollo 11", "Fabricated Thoughts", "OPSM1", "Artifice", "NeRUaL", "Ikaros"],
+		"levels": ["Yatagarasu", "RUST", "xo", "Digital Descent", "The Reaper", "Auditory Breaker", "Infernal Abyss", "Athanatos", "Bausha Vortex", "Missing Benefits", "Furious Flames", "Polygonal Paradox", "Colorful Corruption", "Prisma", "Endless Dream", "Galactic Shift", "lodin da fish washer", "Apollo 11", "Fabricated Thoughts", "OPSM1", "Artifice", "NeRUaL", "Ikaros"],
 
 		"placements": [1, 4, 8, 11, 13, 16, 17, 20, 21, 32, 37, 47, 52, 54, 60, 62, 65, 69, 71, 77, 82, 89, 93]
 	},
