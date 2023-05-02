@@ -1,0 +1,33 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<p id="topbar"></p>
+		<audio id="song" type="audio/mpeg" src="" controls></audio>
+		<script>
+			var count = 0;
+			var audio = document.getElementById("song");
+			
+			var songs = ["https://audio.ngfiles.com/715000/715001_Its-Alright.mp3", "https://audio.ngfiles.com/769000/769508_Heart-of-the-mountain.mp3", "https://audio.ngfiles.com/476000/476408_Rebirth.mp3", "https://audio.ngfiles.com/209000/209244_QASM_OST_03_Gravitation.mp3", "https://audio.ngfiles.com/155000/155863_Durandal___What_Phfor_.mp3", "https://audio.ngfiles.com/581000/581361_--Ghost-of-Jupiter.mp3", "https://audio.ngfiles.com/654000/654812_Intensity.mp3", "https://audio.ngfiles.com/722000/722516_Happy-trigger.mp3", "https://audio.ngfiles.com/799000/799314_Your-Everyday-Happycore.mp3", "https://audio.ngfiles.com/916000/916141_Ive-No-Idea-What-Im-Doin-R.mp3", "https://audio.ngfiles.com/1062000/1062447_CURE-Remastered-in-A.mp3", "https://audio.ngfiles.com/996000/996147_Supernova.mp3", "https://audio.ngfiles.com/996000/996922_Big-Bang.mp3", "https://audio.ngfiles.com/512000/512154_Emotions.mp3"];
+			
+			var newArray = [];
+			var length = songs.length;
+			for(var i = 0; i < length; i++){
+				var index = Math.floor(Math.random() * songs.length);
+				newArray.push(songs[index]);
+				songs.splice(index, 1);
+			}
+			audio.src = newArray[count];
+			document.getElementById("topbar").innerHTML = newArray[count];
+			
+			function next(){
+				count++;
+				audio.src = newArray[count];
+				audio.play();
+				document.getElementById("topbar").innerHTML = newArray[count];
+			}
+			
+			audio.addEventListener("ended", next);
+		</script>
+	</body>
+</html>
